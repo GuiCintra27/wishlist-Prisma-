@@ -6,7 +6,7 @@ const movieRouter = Router();
 
 movieRouter
     .get("/", getMovieMiddleware, getMovie)
-    .get("/:movie", getMovieMiddleware, getMovie)
+    .get("/:movie_name", getMovieMiddleware, getMovie)
     .post("/", insertMovieMiddleware, insertMovie)
     .patch("/", updateMovieMiddleware, updateMovie)
     .delete("/", deleteMovieMiddleware, deleteMovie)

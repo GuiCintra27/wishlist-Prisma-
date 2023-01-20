@@ -3,10 +3,10 @@ import connection from "../database/database.js";
 import { insertMovieModel, updateMovieModel } from "../models/movieModel.js";
 
 export async function getMovieMiddleware(req: Request, res: Response, next: NextFunction) {
-    const { movie } = req.params;
+    const { movie_name } = req.params;
 
-    if(movie){
-        const movieExists = await movieAlreadyExists(movie);
+    if(movie_name){
+        const movieExists = await movieAlreadyExists(movie_name);
     
         if(!movieExists){
             return res.status(404).send("Movie not found!");
@@ -75,9 +75,9 @@ export async function updateMovieMiddleware(req: Request, res: Response, next: N
 }
 
 export async function deleteMovieMiddleware(req: Request, res: Response, next: NextFunction) {
-    const { name } = req.body;
+    const { movie } = req.headers;
 
-    const movieExists = await movieAlreadyExists(name);
+    const movieExists = await movieAlreadyExists(movie);
 
     if(!movieExists){
         return res.status(404).send("Movie not found!");

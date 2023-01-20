@@ -56,13 +56,13 @@ export async function updateMovieRepository(movie: UpdateOrDeleteMovie) {
     }
 }
 
-export async function deleteMovieRepository(movie: UpdateOrDeleteMovie) {
+export async function deleteMovieRepository(movie: string | string[]) {
     try {
         await connection.query(`
             DELETE FROM movies
             WHERE name = $1
         `,
-            [movie.name]
+            [movie]
         );
     } catch (error) {
         throw error;

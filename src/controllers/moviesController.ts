@@ -3,10 +3,10 @@ import { deleteMovieRepository, getMovieRepository, insertMovieRepository, updat
 import { insertMovieService } from "../services/movieService.js";
 
 export async function getMovie(req: Request, res: Response) {
-  const { movie } = req.params;
+  const { movie_name } = req.params;
 
   try {
-    const movieData = await getMovieRepository(movie);
+    const movieData = await getMovieRepository(movie_name);
 
     return res.status(200).send(movieData);
   } catch (error) {
@@ -37,8 +37,9 @@ export async function updateMovie(req: Request, res: Response) {
 }
 
 export async function deleteMovie(req: Request, res: Response) {
+  const {movie} =req.headers
   try {
-    await deleteMovieRepository(req.body);
+    await deleteMovieRepository(movie);
 
     return res.sendStatus(200);
   } catch (error) {
