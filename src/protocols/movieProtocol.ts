@@ -6,8 +6,8 @@ type MovieEntity ={
 };
 
 type InsertDB = {
-    platform: number,
-    genre: number
+    platform_id: number,
+    genre_id: number
 }
 
 type GetMovie = {

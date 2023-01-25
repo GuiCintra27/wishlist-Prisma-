@@ -1,26 +1,22 @@
-import connection from "../database/database.js";
+import prisma from "../database/database.js";
 import { Movie } from "../protocols/movieProtocol.js";
 
 export async function insertMovieService(newMovie: Movie) {
     const { name, media_platform, viewed, note } = newMovie;
     try {
-        const platform = await connection.query(`
-            SELECT id
-            FROM platforms
-            WHERE name = $1
-        `,
-            [media_platform]
-        );
+        const platform = await prisma.platforms.findUnique({
+            where:{
+                name: media_platform
+            }
+        })
 
-        const genre = await connection.query(`
-            SELECT id
-            FROM genres
-            WHERE name = $1
-        `,
-            [newMovie.genre]
-        );
+        const genre = await prisma.genres.findUnique({
+            where: {
+                name: newMovie.genre
+            }
+        })
 
-        const movie = { name, platform: platform.rows[0].id, genre: genre.rows[0].id, viewed, note };
+        const movie = { name, platform_id: platform.id, genre_id: genre.id, viewed, note };
 
         return movie;
     } catch (error) {

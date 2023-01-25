@@ -1,17 +1,19 @@
-import connection from "../database/database.js";
+import prisma from "../database/database.js";
 
 export async function getPlatformsRepository() {
     try {
-        const platforms = await connection.query(`
-            SELECT p.name, count(m.*) as movies
-            FROM movies AS m 
-                JOIN platforms AS p
-                    ON p.id = m.platform_id
-            GROUP BY p.name
-            ORDER BY movies DESC
-        `);
+        const platforms = await prisma.platforms.findMany({
+            select: {
+                name: true,
+                _count:{
+                    select:{
+                        movies: true
+                    }
+                }
+            }
+        })
 
-        return platforms.rows;
+        return platforms.map(item => {return {name: item.name, movies: item._count.movies}});
     } catch (error) {
         throw error;
     }

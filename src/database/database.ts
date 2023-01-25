@@ -1,13 +1,7 @@
-import pg from "pg";
+import pg from "@prisma/client";
 
-const { Pool } = pg;
+const {PrismaClient} = pg;
 
-const connection = new Pool({
-    host:"localhost",
-    user: "postgres",
-    password: "root",
-    port: 5432,
-    database: "wishlist"
-})
+const prisma = new PrismaClient();
 
-export default connection;
+export default prisma;

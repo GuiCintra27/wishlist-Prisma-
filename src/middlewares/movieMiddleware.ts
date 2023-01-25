@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import connection from "../database/database.js";
+import prisma from "../database/database.js";
 import { insertMovieModel, updateMovieModel } from "../models/movieModel.js";
 
 export async function getMovieMiddleware(req: Request, res: Response, next: NextFunction) {
@@ -32,23 +32,19 @@ export async function insertMovieMiddleware(req: Request, res: Response, next: N
         return res.status(409).send("Movie already registered");
     }
 
-    const platform = await connection.query(`
-            SELECT id
-            FROM platforms
-            WHERE name = $1
-        `,
-        [media_platform]
-    );
+    const platform = await prisma.platforms.findUnique({
+        where: {
+            name: media_platform
+        }
+    });
 
-    const genre = await connection.query(`
-            SELECT id
-            FROM genres
-            WHERE name = $1
-        `,
-        [req.body.genre]
-    );
+    const genre = await prisma.genres.findUnique({
+        where: {
+            name: req.body.genre
+        }
+    })
 
-    if(platform.rowCount === 0 || genre.rowCount === 0){
+    if(platform.id || genre.id){
         return res.status(404).send("Gender or Platform Not Found!");
     }
 
@@ -77,7 +73,9 @@ export async function updateMovieMiddleware(req: Request, res: Response, next: N
 export async function deleteMovieMiddleware(req: Request, res: Response, next: NextFunction) {
     const { movie } = req.headers;
 
-    const movieExists = await movieAlreadyExists(movie);
+    const movieName = String(movie);
+
+    const movieExists = await movieAlreadyExists(movieName);
 
     if(!movieExists){
         return res.status(404).send("Movie not found!");
@@ -86,16 +84,14 @@ export async function deleteMovieMiddleware(req: Request, res: Response, next: N
     next();
 }
 
-async function movieAlreadyExists(name: string | string[]) {
-    const movieExists = await connection.query(`
-            SELECT id
-            FROM movies
-            WHERE name = $1
-        `,
-        [name]
-    );
+async function movieAlreadyExists(name: string) {
+    const movieExists = await prisma.movies.findUnique({
+        where: {
+            name: "Deadpoll"
+        }
+    })
 
-    if(movieExists.rowCount === 0) return false;
+    if(!movieExists.id) return false;
 
     return true;
 }

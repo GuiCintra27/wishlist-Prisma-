@@ -1,29 +1,49 @@
-import connection from "../database/database.js";
+import prisma from "../database/database.js";
 import { InsertMovie, UpdateOrDeleteMovie } from "../protocols/movieProtocol.js";
 
-export async function getMovieRepository(movie: string | string[]) {
-    let query = ``;
-    let result = [];
-
-    if(movie){
-        query = `WHERE m.name = $1`;
-        result = [movie]
-    }
-
+export async function getMovieRepository(movie: string) {
     try {
-        const movieData = await connection.query(`
-            SELECT m.id, m.name, p.name as media_platform, g.name as genre, m.viewed, m.note
-            FROM movies as m
-                JOIN  platforms as p
-                    ON p.id = m.platform_id
-                JOIN genres as g
-                    ON g.id = m.genre_id
-        ` + query, result
-        );
+        if (movie) {
+            const movieData = await prisma.movies.findMany({
+                where: {
+                    name: movie || ''
+                },
+                select: {
+                    id: true, name: true, viewed: true, note: true,
+                    platforms: {
+                        select: {
+                            name: true
+                        }
+                    },
+                    genres: {
+                        select: {
+                            name: true
+                        }
+                    },
+                }
+            })
 
-        if(movie) return movieData.rows[0];
+            return movieData.map(item => { return { id: item.id, name: item.name, platform: item.platforms.name, genre: item.genres.name, viewed: item.viewed, note: item.note } });
+        } 
+        
+        const movieData = await prisma.movies.findMany({
+            select: {
+                id: true, name: true, viewed: true, note: true,
+                platforms: {
+                    select: {
+                        name: true
+                    }
+                },
+                genres: {
+                    select: {
+                        name: true
+                    }
+                },
+            }
+        })
 
-        return movieData.rows;
+        return movieData.map(item => { return { id: item.id, name: item.name, platform: item.platforms.name, genre: item.genres.name, viewed: item.viewed, note: item.note } });
+
     } catch (error) {
         throw error;
     }
@@ -31,12 +51,9 @@ export async function getMovieRepository(movie: string | string[]) {
 
 export async function insertMovieRepository(movie: InsertMovie) {
     try {
-        await connection.query(`
-            INSERT INTO movies(name, platform_id, genre_id, viewed, note)
-              VALUES($1, $2, $3, $4, $5)
-        `,
-            [movie.name, movie.platform, movie.genre, movie.viewed, movie.note]
-        );
+        await prisma.movies.create({
+            data: movie
+        });
     } catch (error) {
         throw error;
     }
@@ -44,26 +61,27 @@ export async function insertMovieRepository(movie: InsertMovie) {
 
 export async function updateMovieRepository(movie: UpdateOrDeleteMovie) {
     try {
-        await connection.query(`
-            UPDATE movies
-            SET viewed = $2, note = $3
-            WHERE name = $1
-        `,
-            [movie.name, movie.viewed, movie.note]
-        );
+        await prisma.movies.update({
+            where: {
+                name: movie.name || ''
+            },
+            data: {
+                viewed: movie.viewed,
+                note: movie.note
+            }
+        })
     } catch (error) {
         throw error;
     }
 }
 
-export async function deleteMovieRepository(movie: string | string[]) {
+export async function deleteMovieRepository(movie: string) {
     try {
-        await connection.query(`
-            DELETE FROM movies
-            WHERE name = $1
-        `,
-            [movie]
-        );
+        await prisma.movies.delete({
+            where: {
+                name: movie
+            }
+        })
     } catch (error) {
         throw error;
     }

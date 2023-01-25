@@ -39,7 +39,7 @@ export async function updateMovie(req: Request, res: Response) {
 export async function deleteMovie(req: Request, res: Response) {
   const {movie} =req.headers
   try {
-    await deleteMovieRepository(movie);
+    await deleteMovieRepository(String(movie));
 
     return res.sendStatus(200);
   } catch (error) {
