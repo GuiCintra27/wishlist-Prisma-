@@ -17,7 +17,7 @@ In the project directory, you can run:
 ### `npm start`
 
 Runs the app in the `production` mode.\
-The aplication `runs by default` in http://localhost:4000 and show a console: "Server running in port: 4000"
+The aplication **runs by default** in http://localhost:4000 and show a console: "Server running in port: 4000"
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
@@ -25,7 +25,7 @@ You may also see any lint errors in the console.
 ### `npm run dev`
 
 Runs the app in the `development` mode.\
-The aplication `runs by default` in http://localhost:4000 and show a console: "Server running in port: 4000"
+The aplication **runs by default** in http://localhost:4000 and show a console: "Server running in port: 4000"
 
 ## Running the project
 
@@ -49,6 +49,6 @@ Run npm i to install all the tools needed to run the application.
 
 **Headers:** `movie: A Entidade`
 
-## Platforms Route
+### Platforms Route
 
 **Get:** `/platforms`
