@@ -3,13 +3,15 @@
 This server project was built using [Node](https://nodejs.org/en/). \
 His construction language is [TypeScript](https://www.typescriptlang.org/pt/). \
 Integration with database is done with [prisma](https://www.prisma.io/). \
-Cors, Express, Joi and Pg are some of librarys that the project use to run.
+Cors, Express, Joi and Pg are some of librarys that the project use to run. 
+
+Run **npm i** to install all the tools needed to run the application.
 
 ## Database
 
 To create the database is just configure the DATABASE_URL variable within .env file and run `npx prisma migrate dev` in terminal. 
 
-This comand will create and populate de database, if not populate it, jus run `npm run prisma:seed`;
+This comand will create and populate de database, if not populate it, jus run `npm run prisma:seed`
 
 ## Available Scripts
 
@@ -29,8 +31,6 @@ Runs the app in the `development` mode.\
 The aplication **runs by default** in http://localhost:4000 and show a console: "Server running in port: 4000"
 
 ## Running the project
-
-Run npm i to install all the tools needed to run the application.
 
 ### Movies Route
 
