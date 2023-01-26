@@ -7,7 +7,7 @@ Cors, Express, Joi and Pg are some of librarys that the project use to run.
 
 ## Database
 
-To create the database is just configure the DATABASE_URL variable within .env file and run `npx prisma migrate dev` in terminal. \
+To create the database is just configure the DATABASE_URL variable within .env file and run `npx prisma migrate dev` in terminal. 
 
 This comand will create and populate de database, if not populate it, jus run `npm run prisma:seed`;
 
