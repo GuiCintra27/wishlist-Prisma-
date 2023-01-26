@@ -44,7 +44,7 @@ export async function insertMovieMiddleware(req: Request, res: Response, next: N
         }
     })
 
-    if(platform.id || genre.id){
+    if(!platform || !genre){
         return res.status(404).send("Gender or Platform Not Found!");
     }
 
@@ -87,11 +87,11 @@ export async function deleteMovieMiddleware(req: Request, res: Response, next: N
 async function movieAlreadyExists(name: string) {
     const movieExists = await prisma.movies.findUnique({
         where: {
-            name: "Deadpoll"
+            name: name
         }
     })
 
-    if(!movieExists.id) return false;
+    if(!movieExists) return false;
 
     return true;
 }
