@@ -2,13 +2,14 @@
 
 This server project was built using [Node](https://nodejs.org/en/). \
 His construction language is [TypeScript](https://www.typescriptlang.org/pt/). \
+Integration with database is done with [prisma](https://www.prisma.io/)
 Cors, Express, Joi and Pg are some of librarys that the project use to run.
 
 ## Database
 
-The database used in the project is PostgreSql.\
-The database dump is in the `dump.sql` file.\
-First create the database with name **wishlist**, after, just copy the content in that file and paste in your database.
+To create the database is just configure the DATABASE_URL variable within .env file and run `npx prisma migrate dev` in terminal.\
+
+This comand will create and populate de database, if not populate it, jus run `npm run prisma:seed`;
 
 ## Available Scripts
 
